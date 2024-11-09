@@ -1,0 +1,44 @@
+name: Daily Tasks (Backup & Cleanup)
+
+# This workflow is triggered by a cron schedule, as well as on manual dispatch
+on:
+  schedule:
+    # Run once a day at midnight UTC (adjust according to your timezone)
+    - cron: '0 0 * * *'  # Cron syntax for daily at midnight UTC
+  workflow_dispatch:  # Optional, allows you to manually trigger the workflow
+
+jobs:
+  daily-backup-and-cleanup:
+    runs-on: ubuntu-latest  # Use an Ubuntu runner, can be changed based on task requirements
+
+    steps:
+      # Step 1: Checkout the code (if needed for your task)
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up your environment, e.g., Node.js, Python, etc. (depending on your task)
+      - name: Set up Python (if needed)
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # Specify the Python version (if required)
+
+      # Step 3: Run the backup script (replace with your actual backup command)
+      - name: Run Backup Script
+        run: |
+          echo "Running daily backup..."
+          # Example: A hypothetical backup script (adjust to your needs)
+          python3 scripts/backup.py  # Or your own command
+
+      # Step 4: Run the data cleanup task (replace with your actual cleanup command)
+      - name: Run Data Cleanup
+        run: |
+          echo "Running daily data cleanup..."
+          # Example: A hypothetical data cleanup script (adjust to your needs)
+          python3 scripts/cleanup.py  # Or your own command
+
+      # Optional: Upload logs or backup files as artifacts (if needed)
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: daily-backup
+          path: ./backups/  # Adjust the path as needed
